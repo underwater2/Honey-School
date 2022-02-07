@@ -5,7 +5,8 @@
     <router-link to="/signup">Signup</router-link> | 
     <router-link to="/login">Login</router-link> | 
     <router-link to="/classboard">학급게시판</router-link> | 
-    <router-link to="/videoclass">화상수업</router-link>
+    <router-link to="/videoclass">화상수업</router-link>  |
+    <router-link to="/openvidu">openviduTest</router-link>
   </div>
   <router-view/>
 </template>

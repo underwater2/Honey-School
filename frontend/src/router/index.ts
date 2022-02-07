@@ -11,6 +11,7 @@ import Question from "../views/board/Question.vue"
 import Signup from "../views/accounts/Signup.vue";
 import Login from "../views/accounts/Login.vue";
 import Videoclass from "../views/Videoclass/Videoclass.vue";
+import OpenviduIndex from "../views/openvidu/index.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -95,6 +96,13 @@ const routes: Array<RouteRecordRaw> = [
     name: "Videoclass",
     component: Videoclass,
   },
+
+  // openviduTest Vue
+  {
+    path: "/openvidu",
+    name: "OpenviduIndex",
+    component: OpenviduIndex,
+  }
 ];
 
 const router = createRouter({

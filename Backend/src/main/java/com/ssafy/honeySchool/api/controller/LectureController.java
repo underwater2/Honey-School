@@ -1,12 +1,14 @@
 package com.ssafy.honeySchool.api.controller;
 
 import com.ssafy.honeySchool.api.request.LectureReq;
-import com.ssafy.honeySchool.api.response.LectureRes;
-import com.ssafy.honeySchool.api.response.UserInfoRes;
 import com.ssafy.honeySchool.api.service.LectureService;
 import io.swagger.annotations.Api;
+import reactor.core.publisher.Mono;
+
+import java.util.Base64;
+
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -19,9 +21,30 @@ public class LectureController {
     @Autowired
     LectureService lectureService;
 
-    @PostMapping("/")
-    public ResponseEntity<LectureRes> createLecture(@RequestBody LectureReq lectureReq, @RequestHeader(value = "Authorization") String header){
-        LectureRes lr=lectureService.createLecture(lectureReq,header);
-        return ResponseEntity.status(200).body(lr);
+    private String defaultHeader = "OPENVIDUAPP:ssafy";
+    @PostMapping()
+    public Mono<String> createLecture(@RequestBody LectureReq lectureReq, @RequestHeader(value = "Authorization") String head){    	
+
+    	String header = "Basic "+ Base64.getEncoder().encodeToString(head.getBytes());
+    	System.out.println("real Header :"+header);
+        return lectureService.createLecture(lectureReq,header);
+        
     }
+    @GetMapping()
+    public Mono<String> searchAllLecture(@RequestHeader(value = "Authorization") String head) {
+    	String header = "Basic "+ Base64.getEncoder().encodeToString(head.getBytes());
+    	return lectureService.searchAllLecture(header);
+    }
+    @DeleteMapping() 
+    public Mono<String> deleteLecture(@RequestParam(value = "sessionId") String sessionId, @RequestHeader(value = "Authorization") String head){
+    	String header = "Basic "+ Base64.getEncoder().encodeToString(head.getBytes());    	
+    	return lectureService.deleteLecture(sessionId, header);
+    }
+    
+    @PostMapping("/connect")
+    public Mono<String> connectLecture( @RequestHeader(value = "sessionId") String sessionId) throws ParseException{    	    	
+    	System.out.println("Connect연결");
+    	return lectureService.connectLecture("sessionId", "Basic "+Base64.getEncoder().encodeToString(this.defaultHeader.getBytes()));    	
+    }
+
 }

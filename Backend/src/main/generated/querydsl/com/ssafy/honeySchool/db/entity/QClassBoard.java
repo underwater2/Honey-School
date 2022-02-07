@@ -25,7 +25,7 @@ public class QClassBoard extends EntityPathBase<ClassBoard> {
 
     public final StringPath content = createString("content");
 
-    public final DateTimePath<java.util.Date> date = createDateTime("date", java.util.Date.class);
+    public final DatePath<java.sql.Date> date = createDate("date", java.sql.Date.class);
 
     public final StringPath file_link = createString("file_link");
 

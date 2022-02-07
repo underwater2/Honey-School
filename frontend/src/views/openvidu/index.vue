@@ -15,6 +15,9 @@
 					</p>
 					<p class="text-center">
 						<button class="btn btn-lg btn-success" @click="joinSession()">Join!</button>
+						<button class="btn btn-lg btn-info" @click="SearchSession()">Check Session!</button>
+						<button class="btn btn-lg btn-danger" @click="CloseSession()">Delete Session!</button>
+						<button class="btn btn-lg btn-danger" @click="joinConnection({mySessionId})">join Connection!</button>
 					</p>
 				</div>
 			</div>
@@ -59,6 +62,9 @@ export default {
 			session: undefined,
 			mainStreamManager: undefined,
 			publisher: undefined,
+			header: {
+				"Authorization": "OPENVIDUAPP:ssafy"
+			},
 			subscribers: [],
 
 			mySessionId: 'SessionA',
@@ -133,8 +139,11 @@ export default {
 		},
 
 		leaveSession () {
+			const headers = {
+				"Authorization": "OPENVIDUAPP:ssafy"
+			}
 			// --- Leave the session by calling 'disconnect' method over the Session object ---			
-			axios.get("/openvidu/api/sessions/")
+			axios.delete(process.env.VUE_APP_API_URL+"/lecture?sessionId="+this.mySessionId,{headers})
 				.then((data)=>{
 					console.console.log(data);
 				})
@@ -176,28 +185,38 @@ export default {
 		// See https://docs.openvidu.io/en/stable/reference-docs/REST-API/#post-session
 		createSession (sessionId) {
 			console.log(process.env);			
-		
-			axios.post(process.env.VUE_APP_API_URL+"/openvidu/session", JSON.stringify({
-				"session-name": sessionId,
-				"clientData": "권영현",
-				}))
-				.then((response)=>{
-					console.log(response);
-				})					
-				.catch((error)=>{
-				alert(error);
-				});
+
+			const headers = {
+				"Authorization": "OPENVIDUAPP:ssafy"
+			}
+			
+
+			return new Promise((resolve, reject) =>{
+				axios.post(process.env.VUE_APP_API_URL+"/lecture", {
+					customSessionId: sessionId,
+					},{headers})
+					.then((response) => {						
+						console.log(response)
+					})
+					.catch(error => {
+						if (error.response.status === 409) {
+							resolve(sessionId);
+						} else {
+							console.warn(`No connection to OpenVidu Server. This may be a certificate error at ${OPENVIDU_SERVER_URL}`);
+							if (window.confirm(`No connection to OpenVidu Server. This may be a certificate error at ${OPENVIDU_SERVER_URL}\n\nClick OK to navigate and accept it. If no certificate warning is shown, then check that your OpenVidu Server is up and running at "${OPENVIDU_SERVER_URL}"`)) {
+								location.assign(`${OPENVIDU_SERVER_URL}/accept-certificate`);
+							}
+							reject(error.response);
+						}
+					});
+			});
+			
 
 			// 진짜 동작하는 부분
 			// return new Promise((resolve, reject) => {
 			// 	axios.post(`${OPENVIDU_SERVER_URL}/openvidu/api/sessions`, {
 			// 			customSessionId: sessionId,
-			// 		}, {
-			// 			auth: {
-			// 				username: "OPENVIDUAPP",
-			// 				password: "ssafy"
-			// 			}
-			// 		})
+			// 		}, {headers})
 			// 		.then((response) => {						
 			// 			(response.data)
 			// 		})
@@ -215,8 +234,52 @@ export default {
 			// 			}
 			// 		});
 			// });
+		},		
+
+		SearchSession(){
+			const headers = {
+				"Authorization": "OPENVIDUAPP:ssafy"
+			}
+			axios.get(process.env.VUE_APP_API_URL+"/lecture",{headers})
+			.then((response)=>{
+				console.log(response.data)
+			})
+			.catch((error)=>{
+				console.log(error);
+				}
+			)
 		},
 		
+		CloseSession(){
+			const headers = {
+				"Authorization": "OPENVIDUAPP:ssafy"
+			}
+			axios.delete(process.env.VUE_APP_API_URL+"/lecture?sessionId="+this.mySessionId,{headers})
+			.then((response)=>{
+				console.log(response)
+			})
+			.catch((error)=>{
+				console.log(error);
+				}
+			)
+		},
+
+		joinConnection(sessionId){		
+			console.log(sessionId);	
+			const headers = {
+				"Authorization": "OPENVIDUAPP:ssafy",
+				"sessionId": sessionId
+			}
+			axios.post(process.env.VUE_APP_API_URL+"/lecture/connect",{},{headers})
+			.then((response)=>{
+				console.log(response)
+			})
+			.catch((error)=>{
+				console.log(error);
+			})
+		},
+
+
 		// See https://docs.openvidu.io/en/stable/reference-docs/REST-API/#post-connection
 		createToken (sessionId) {
 			return new Promise((resolve, reject) => {

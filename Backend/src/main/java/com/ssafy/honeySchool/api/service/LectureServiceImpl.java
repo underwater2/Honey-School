@@ -142,7 +142,7 @@ public class LectureServiceImpl implements LectureService{
 	@Override
 	public HttpStatus disconnectLecture(String sessionId, String connectionId, String header) {
 		webClient.delete()
-		.uri("/openvidu/api/sessions/"+sessionId+"/connection/"+connectionId)
+		.uri("openvidu/api/sessions/"+sessionId+"/connection/"+connectionId)
 		.header(HttpHeaders.AUTHORIZATION, header)
 		.retrieve();
 		return HttpStatus.OK;

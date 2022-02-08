@@ -136,25 +136,29 @@ export default {
 		},
 
 		leaveSession () {
+
 			const headers = {
 				"Authorization": "OPENVIDUAPP:ssafy"
 			}
 			// --- Leave the session by calling 'disconnect' method over the Session object ---			
-			axios.delete(process.env.VUE_APP_API_URL+"/lecture/session?sessionId="+this.mySessionId&+"connectionId="+this.connectionId,{headers})
+			axios.delete(process.env.VUE_APP_API_URL+"/lecture/connect?sessionId="+this.mySessionId+"&connectionId="+this.connectionId,{headers})
 				.then((response)=>{
 					console.log(response);
 				})
 				.catch((error)=>{
 					alert("세션 나가기 오류");
-				})
-			if (this.session) this.session.disconnect();
+				})			
+			if(this.session) this.session.disconnect();
 
 			this.session = undefined;
 			this.mainStreamManager = undefined;
 			this.publisher = undefined;
 			this.subscribers = [];
 			this.OV = undefined;
+
+
 			this.connectionId = "";
+
 			window.removeEventListener('beforeunload', this.leaveSession);
 		},
 

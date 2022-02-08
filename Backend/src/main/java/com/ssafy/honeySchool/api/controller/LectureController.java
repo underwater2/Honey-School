@@ -54,7 +54,7 @@ public class LectureController {
     }
     @DeleteMapping("/connect")
     public HttpStatus disconnectLecture(@RequestParam(value= "sessionId") String sessionId, @RequestParam(value="connectionId") String connectionId) {
-    	String header = "Basic "+ Base64.getEncoder().encodeToString(this.defaultHeader.getBytes());
+    	String header = "Basic "+ Base64.getEncoder().encodeToString(this.defaultHeader.getBytes());    	
     	return lectureService.disconnectLecture(sessionId,connectionId,header);
     }
 

@@ -32,8 +32,8 @@
 				<user-video :stream-manager="mainStreamManager"/>
 			</div>
 			<div id="video-container" class="col-md-6">
-				<user-video :stream-manager="publisher" @click="updateMainVideoStreamManager(publisher)"/>
-				<user-video v-for="sub in subscribers" :key="sub.stream.connection.connectionId" :stream-manager="sub" @click="updateMainVideoStreamManager(sub)"/>
+				<user-video :stream-manager="publisher" />
+				<user-video v-for="sub in subscribers" :key="sub.stream.connection.connectionId" :stream-manager="sub"/>
 			</div>
 		</div>
 	</div>
@@ -79,8 +79,8 @@ export default {
 			// this. OV = new OpenVidu(OPENVIDU_SERVER_URL, OPENVIDU_SERVER_SECRET);
 
 			// --- Init a session ---
-			this.session = this.OV.initSession();
-			
+			this.session = this.OV.initSession();			
+
 			// --- Specify the actions when events take place in the session ---
 
 			// On every new Stream received...
@@ -134,6 +134,8 @@ export default {
 						console.log('There was an error connecting to the session:', error.code, error.message);
 					});
 			});
+
+				console.log("메인 스트림 매니저 : "+this.mainStreamManager);
 
 			window.addEventListener('beforeunload', this.leaveSession)
 		},
@@ -189,8 +191,7 @@ export default {
 			const headers = {
 				"Authorization": "OPENVIDUAPP:ssafy"
 			}
-			
-
+						
 			return new Promise((resolve, reject) =>{
 				axios.post(process.env.VUE_APP_API_URL+"/lecture", {
 					customSessionId: sessionId,

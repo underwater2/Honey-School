@@ -17,7 +17,7 @@
 						<button class="btn btn-lg btn-success" @click="joinSession()">Join!</button>
 						<button class="btn btn-lg btn-info" @click="SearchSession()">Check Session!</button>
 						<button class="btn btn-lg btn-danger" @click="CloseSession()">Delete Session!</button>
-						<button class="btn btn-lg btn-danger" @click="joinConnection({mySessionId})">join Connection!</button>
+						<button class="btn btn-lg btn-danger" @click="joinConnection()">join Connection!</button>
 					</p>
 				</div>
 			</div>
@@ -109,7 +109,7 @@ export default {
 			this.getToken(this.mySessionId).then(token => {
 				this.session.connect(token, { clientData: this.myUserName })
 					.then(() => {
-
+						alert("연결 성공");
 						// --- Get your own camera stream with the desired properties ---
 
 						let publisher = this.OV.initPublisher(undefined, {
@@ -195,11 +195,10 @@ export default {
 				axios.post(process.env.VUE_APP_API_URL+"/lecture", {
 					customSessionId: sessionId,
 					},{headers})
-					.then((response) => {						
-						console.log(response)
-					})
+					.then(response=>response.data)
+					.then(data => resolve(data.id))
 					.catch(error => {
-						if (error.response.status === 409) {
+						if (error) {
 							resolve(sessionId);
 						} else {
 							console.warn(`No connection to OpenVidu Server. This may be a certificate error at ${OPENVIDU_SERVER_URL}`);
@@ -264,38 +263,43 @@ export default {
 			)
 		},
 
-		joinConnection(sessionId){		
-			console.log(sessionId);	
+		joinConnection(){		
+			console.log(this.mySessionId);	
 			const headers = {
 				"Authorization": "OPENVIDUAPP:ssafy",
-				"sessionId": sessionId
 			}
-			axios.post(process.env.VUE_APP_API_URL+"/lecture/connect",{},{headers})
-			.then((response)=>{
-				console.log(response)
-			})
-			.catch((error)=>{
-				console.log(error);
+			return new Promise((resolve, reject) => {
+				axios.post(process.env.VUE_APP_API_URL+"/lecture/connect",{
+					customSessionId: this.mySessionId,
+				},{headers})
+				.then((response)=>{
+					console.log(response)
+					resolve(response.data.token);
+				})
+				.catch(error =>
+					reject(error.response));				
 			})
 		},
 
 
 		// See https://docs.openvidu.io/en/stable/reference-docs/REST-API/#post-connection
 		createToken (sessionId) {
-			return new Promise((resolve, reject) => {
-				axios
-					.post(`${OPENVIDU_SERVER_URL}/openvidu/api/sessions/${sessionId}/connection`, {}, {
-						auth: {
-							username: 'OPENVIDUAPP',
-							password: OPENVIDU_SERVER_SECRET,
-						},
-					})
-					.then(response => response.data)
-					.then(data => 
-                        resolve(data.token)
-                    )
-					.catch(error => reject(error.response));
-			});
+			return this.joinConnection(sessionId);
+
+			// return new Promise((resolve, reject) => {
+			// 	axios
+			// 		.post(`${OPENVIDU_SERVER_URL}/openvidu/api/sessions/${sessionId}/connection`, {}, {
+			// 			auth: {
+			// 				username: 'OPENVIDUAPP',
+			// 				password: OPENVIDU_SERVER_SECRET,
+			// 			},
+			// 		})
+			// 		.then(response => response.data)
+			// 		.then(data => 
+            //             resolve(data.token)
+            //         )
+			// 		.catch(error => reject(error.response));
+			// });
 		},
 	}
 }

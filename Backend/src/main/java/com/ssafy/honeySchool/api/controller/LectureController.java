@@ -42,9 +42,10 @@ public class LectureController {
     }
     
     @PostMapping("/connect")
-    public Mono<String> connectLecture( @RequestHeader(value = "sessionId") String sessionId) throws ParseException{    	    	
+    public Mono<String> connectLecture(@RequestBody LectureReq lectureReq) throws ParseException{    	    	
     	System.out.println("Connect연결");
-    	return lectureService.connectLecture("sessionId", "Basic "+Base64.getEncoder().encodeToString(this.defaultHeader.getBytes()));    	
+    	System.out.println(lectureReq.toString());
+    	return lectureService.connectLecture(lectureReq.getCustomSessionId(), "Basic "+Base64.getEncoder().encodeToString(this.defaultHeader.getBytes()));    	
     }
 
 }

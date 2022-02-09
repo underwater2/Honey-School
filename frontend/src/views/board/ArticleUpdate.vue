@@ -91,9 +91,7 @@ export default {
                 currentarticle.value = response.data
                 
             })
-            .catch(()=>
-                alert("실패!")
-            )  
+            .catch()
         }
 
         articleDetail().then(() => {

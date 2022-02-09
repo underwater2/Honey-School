@@ -38,13 +38,9 @@ export default {
 		getConnectionData () {						
 			return JSON.parse(this.streamManager.stream.connection.data);
 		},
-		changeMuteStatus() {
-      	//this.publisher.publishAudio(this.muteStatus); // true to unmute the audio track, false to mute it
-		console.log(this.streamManager.stream);
-		console.log("-------");
-		console.log(this.streamManager.stream.streamManager);
-      	this.streamManager.stream.subscribeToAudio(this.muteStatus);
-      	this.muteStatus = !this.muteStatus;
+		changeMuteStatus() {      	
+      	// this.streamManager.stream.subscribeToAudio(this.muteStatus);
+      	// this.muteStatus = !this.muteStatus;
     	},
 	},
 };

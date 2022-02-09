@@ -148,12 +148,8 @@ export default {
 			)			
 		},
 		leaveSession () {
-
-			const headers = {
-				"Authorization": "OPENVIDUAPP:ssafy"
-			}
 			// --- Leave the session by calling 'disconnect' method over the Session object ---			
-			axios.delete(process.env.VUE_APP_API_URL+"/lecture/connect?sessionId="+this.mySessionId+"&connectionId="+this.connectionId,{headers})
+			axios.delete(process.env.VUE_APP_API_URL+"/lecture/connect?sessionId="+this.mySessionId+"&connectionId="+this.connectionId)
 				.then((response)=>{
 					console.log(response);
 				})
@@ -198,14 +194,10 @@ export default {
 		// See https://docs.openvidu.io/en/stable/reference-docs/REST-API/#post-session
 		createSession (sessionId) {		
 
-			const headers = {
-				"Authorization": "OPENVIDUAPP:ssafy"
-			}
 
 			return new Promise((resolve, reject) =>{
 				axios.post(process.env.VUE_APP_API_URL+"/lecture", {
-					customSessionId: sessionId,
-					},{headers})
+					customSessionId: sessionId})
 					.then(response=>response.data)
 					.then(data => resolve(data.id))
 					.catch(error => {

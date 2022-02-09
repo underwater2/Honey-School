@@ -29,6 +29,8 @@
             <button class="btn btn-lg btn-success" @click="joinSession()">
               참석!
             </button>
+            <button class="btn btn-lg btn-info" @click="SearchAllSession()">Check Session!</button>
+						<button class="btn btn-lg btn-danger" @click="CloseSession()">Delete Session!</button>
           </p>
         </div>
       </div>
@@ -96,8 +98,8 @@ import UserVideo from "./UserVideo";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
-const OPENVIDU_SERVER_URL = "https://" + location.hostname + ":4443";
-const OPENVIDU_SERVER_SECRET = "MY_SECRET";
+const OPENVIDU_SERVER_URL = "https://i6b201.p.ssafy.io:443";
+const OPENVIDU_SERVER_SECRET = "ssafy";
 
 export default {
   name: "App",
@@ -117,10 +119,11 @@ export default {
       publisherScreen: undefined,
       subscribersCamera: [],
       subscribersScreen: [],
-
       mySessionId: "SessionA",
       myUserName: "Participant" + Math.floor(Math.random() * 100),
       screensharing: false,
+
+
     };
   },
 
@@ -176,8 +179,7 @@ export default {
         this.sessionCamera
           .connect(token, { clientData: this.myUserName })
           .then(() => {
-            // --- Get your own camera stream with the desired properties ---
-
+            // --- Get your own camera stream with the desired properties ---            
             let publisher = this.OVCamera.initPublisher(undefined, {
               audioSource: undefined, // The source of audio. If undefined default microphone
               videoSource: undefined, // The source of video. If undefined default webcam
@@ -188,13 +190,7 @@ export default {
               insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
               mirror: false, // Whether to mirror your local video or not
             });
-
-            // publisher.on("videoElementCreated", (event) => {
-            //   this.initMainVideo(event.element, this.myUserName);
-            //   this.appendUserData(event.element, this.myUserName);
-            //   event.element["muted"] = true;
-            // });
-
+            
             this.mainStreamManager = publisher;
             this.publisherCamera = publisher;
 
@@ -209,22 +205,18 @@ export default {
               error.message
             );
           });
-      });
-
-      this.getToken(this.mySessionId).then((tokenScreen) => {
-        // Create a token for screen share
-        this.sessionScreen
-          .connect(tokenScreen, { clientData: this.myUserName })
-          .then(() => {
-            console.log("Session screen connected");
-          })
-          .catch((error) => {
-            console.warn(
-              "There was an error connecting to the session for screen share:",
-              error.code,
-              error.message
-            );
-          });
+        // this.sessionScreen
+        //   .connect(tokenScreen, { clientData: this.myUserName })
+        //   .then(() => {
+        //     console.log("Session screen connected");
+        //   })
+        //   .catch((error) => {
+        //     console.warn(
+        //       "There was an error connecting to the session for screen share:",
+        //       error.code,
+        //       error.message
+        //     );
+        //   });  
       });
 
       window.addEventListener("beforeunload", this.leaveSession);
@@ -265,11 +257,19 @@ export default {
 
     leaveSession() {
       // --- Leave the session by calling 'disconnect' method over the Session object ---
+      axios.delete(process.env.VUE_APP_API_URL+"/lecture/connect?sessionId="+this.mySessionId+"&connectionId="+this.connectionId)
+				.then((response)=>{
+					console.log(response);
+				})
+				.catch((error)=>{
+					alert("세션 나가기 오류");
+				})			
+			if(this.session) this.session.disconnect();
+      
       if (this.sessionCamera) {
         this.sessionCamera.disconnect();
         this.sessionScreen.disconnect();
-      }
-
+      }        
       this.OVCamera = undefined;
       this.OVScreen = undefined;
       this.sessionCamera = undefined;
@@ -314,19 +314,16 @@ export default {
       return new Promise((resolve, reject) => {
         axios
           .post(
-            `${OPENVIDU_SERVER_URL}/openvidu/api/sessions`,
+            process.env.VUE_APP_API_URL+"/lecture",
             JSON.stringify({
               customSessionId: sessionId,
-            }),
-            {
-              auth: {
-                username: "OPENVIDUAPP",
-                password: OPENVIDU_SERVER_SECRET,
-              },
-            }
+            })
           )
-          .then((response) => response.data)
-          .then((data) => resolve(data.id))
+          .then((response) => {
+            console.log("세션 만들기 성공!");
+            console.log(response);
+            resolve(response.data.id);
+          })          
           .catch((error) => {
             if (error.response.status === 409) {
               resolve(sessionId);
@@ -346,25 +343,62 @@ export default {
           });
       });
     },
+    // 해당 세션 조회하기
+    checkSession(sessionId){
+			axios.get(process.env.VUE_APP_API_URL+"/lecture/search?sessionId="+sessionId)
+			.then((response)=>{
+				console.log(response.data);
+				if(response.data==null) return false;
+				return true;
+			})
+			.catch((error)=>{
+				alert(error);
+			}
+			)			
+		},
+    // 전체 세션
+    SearchAllSession(){
+			axios.get(process.env.VUE_APP_API_URL+"/lecture")
+			.then((response)=>{
+				console.log(response.data);				
+			})
+			.catch((error)=>{
+				alert(error);
+			}
+			)
+		},
+    // 해당 세션 닫기
+    CloseSession(){
+			axios.delete(process.env.VUE_APP_API_URL+"/lecture?sessionId="+this.mySessionId)
+			.then(()=>{
+				return;
+			})
+			.catch((error)=>{
+				alert(error);
+			}
+			)
+		},
+
+    // Connection 연결하기
+    joinConnection(sessionId){		
+			return new Promise((resolve, reject) => {
+				axios.post(process.env.VUE_APP_API_URL+"/lecture/connect",{
+					customSessionId: sessionId})
+				.then(response => response.data)
+				.then((data) =>{ 
+					console.log("토큰 받기!!")
+					console.log(data)
+					resolve(data.token)
+				}
+				)				 
+				.catch(error =>
+					reject(error.response));				
+			})
+		},
 
     // See https://docs.openvidu.io/en/stable/reference-docs/REST-API/#post-openviduapisessionsltsession_idgtconnection
     createToken(sessionId) {
-      return new Promise((resolve, reject) => {
-        axios
-          .post(
-            `${OPENVIDU_SERVER_URL}/openvidu/api/sessions/${sessionId}/connection`,
-            {},
-            {
-              auth: {
-                username: "OPENVIDUAPP",
-                password: OPENVIDU_SERVER_SECRET,
-              },
-            }
-          )
-          .then((response) => response.data)
-          .then((data) => resolve(data.token))
-          .catch((error) => reject(error.response));
-      });
+      return this.joinConnection(sessionId);
     },
   },
 };

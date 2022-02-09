@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
  * 인증 관련 API 요청 처리를 위한 컨트롤러 정의.
  */
 @Api(value = "강의 API", tags = {"Lecture"})
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/v1/lecture")
 public class LectureController {
@@ -27,16 +28,21 @@ public class LectureController {
     LectureService lectureService;
 
     private String defaultHeader = "OPENVIDUAPP:ssafy";
-    
+    private String dfHeader = "Basic "+Base64.getEncoder().encodeToString(this.defaultHeader.getBytes()); 
     private Map<String, String> map;
     
     @PostMapping()
     public Mono<String> createLecture(@RequestBody LectureReq lectureReq){    	
     	String header = "Basic "+ Base64.getEncoder().encodeToString(this.defaultHeader.getBytes());
-        return lectureService.createLecture(lectureReq,header);
-        
+        return lectureService.createLecture(lectureReq,header);    
     }
-    @GetMapping()
+    @GetMapping("/search")
+    public Mono<String> searchLecture(@RequestParam(value = "sessionId") String sessionId) {
+    	String header = "Basic "+ Base64.getEncoder().encodeToString(this.defaultHeader.getBytes());
+    	return lectureService.searchLecture(sessionId, this.dfHeader);
+    }
+    
+    @GetMapping("/search/all")
     public Mono<String> searchAllLecture() {
     	String header = "Basic "+ Base64.getEncoder().encodeToString(this.defaultHeader.getBytes());
     	return lectureService.searchAllLecture(header);

@@ -15,7 +15,7 @@
 					</p>
 					<p class="text-center">
 						<button class="btn btn-lg btn-success" @click="joinSession()">Join!</button>
-						<button class="btn btn-lg btn-info" @click="SearchSession()">Check Session!</button>
+						<button class="btn btn-lg btn-info" @click="SearchAllSession()">Check Session!</button>
 						<button class="btn btn-lg btn-danger" @click="CloseSession()">Delete Session!</button>						
 					</p>
 				</div>
@@ -28,7 +28,7 @@
 				<input class="btn btn-large btn-danger" type="button" id="buttonLeaveSession" @click="leaveSession" value="Leave session">
 			</div>
 			<div id="main-video" class="col-md-6">
-				<user-video :stream-manager="mainStreamManager"/>
+				<user-video :stream-manager="mainStreamManager" />
 			</div>
 			<div id="video-container" class="col-md-6">
 				<user-video :stream-manager="publisher" />
@@ -42,7 +42,6 @@
 import axios from 'axios';
 import { OpenVidu } from 'openvidu-browser';
 import UserVideo from './UserVideo';
-
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 const OPENVIDU_SERVER_URL = "https://i6b201.p.ssafy.io:443";
@@ -61,80 +60,93 @@ export default {
 			session: undefined,
 			mainStreamManager: undefined,
 			publisher: undefined,
-			connectionId: "",
-			subscribers: [],
-
+			subscribers: [],			
 			mySessionId: 'SessionA',
 			myUserName: 'Participant' + Math.floor(Math.random() * 100),
+			connectionId: "",
 		}
 	},
 
 	methods: {
 		joinSession () {
 			// --- Get an OpenVidu object ---
-			this.OV = new OpenVidu();
-			// this. OV = new OpenVidu(OPENVIDU_SERVER_URL, OPENVIDU_SERVER_SECRET);
 
-			// --- Init a session ---
-			this.session = this.OV.initSession();			
+			// 세션이 존재하지 않는 경우
+				alert("세션 만들기!");
 
-			// --- Specify the actions when events take place in the session ---
+				this.OV = new OpenVidu();			
 
-			// On every new Stream received...
-			this.session.on('streamCreated', ({ stream }) => {
-				const subscriber = this.session.subscribe(stream);
-				this.subscribers.push(subscriber);
-			});
+				// --- Init a session ---
+				this.session = this.OV.initSession();			
 
-			// On every Stream destroyed...
-			this.session.on('streamDestroyed', ({ stream }) => {
-				const index = this.subscribers.indexOf(stream.streamManager, 0);
-				if (index >= 0) {
-					this.subscribers.splice(index, 1);
-				}
-			});
+				// --- Specify the actions when events take place in the session ---
 
-			// On every asynchronous exception...
-			this.session.on('exception', ({ exception }) => {
-				console.warn(exception);
-			});
+				// On every new Stream received...
+				this.session.on('streamCreated', ({ stream }) => {
+					const subscriber = this.session.subscribe(stream);
+					this.subscribers.push(subscriber);
+				});
 
-			// --- Connect to the session with a valid user token ---
+				// On every Stream destroyed...
+				this.session.on('streamDestroyed', ({ stream }) => {
+					const index = this.subscribers.indexOf(stream.streamManager, 0);
+					if (index >= 0) {
+						this.subscribers.splice(index, 1);
+					}
+				});
 
-			// 'getToken' method is simulating what your server-side should do.
-			// 'token' parameter should be retrieved and returned by your own backend
-			this.getToken(this.mySessionId).then(token => {
-				this.session.connect(token, { clientData: this.myUserName })
-					.then(() => {
-						alert("연결 성공");
-						// --- Get your own camera stream with the desired properties ---
+				// On every asynchronous exception...
+				this.session.on('exception', ({ exception }) => {
+					console.warn(exception);
+				});
 
-						let publisher = this.OV.initPublisher(undefined, {
-							audioSource: undefined, // The source of audio. If undefined default microphone
-							videoSource: undefined, // The source of video. If undefined default webcam
-							publishAudio: true,  	// Whether you want to start publishing with your audio unmuted or not
-							publishVideo: true,  	// Whether you want to start publishing with your video enabled or not
-							resolution: '640x480',  // The resolution of your video
-							frameRate: 30,			// The frame rate of your video
-							insertMode: 'APPEND',	// How the video is inserted in the target element 'video-container'
-							mirror: false       	// Whether to mirror your local video or not
+				// --- Connect to the session with a valid user token ---
+
+				// 'getToken' method is simulating what your server-side should do.
+				// 'token' parameter should be retrieved and returned by your own backend
+
+
+				this.getToken(this.mySessionId).then(token => {
+					this.session.connect(token, { clientData: this.myUserName })
+						.then(() => {															
+							// --- Get your own camera stream with the desired properties ---
+
+							let publisher = this.OV.initPublisher(undefined, {
+								audioSource: undefined, // The source of audio. If undefined default microphone
+								videoSource: undefined, // The source of video. If undefined default webcam
+								publishAudio: true,  	// Whether you want to start publishing with your audio unmuted or not
+								publishVideo: true,  	// Whether you want to start publishing with your video enabled or not
+								resolution: '640x480',  // The resolution of your video
+								frameRate: 30,			// The frame rate of your video
+								insertMode: 'APPEND',	// How the video is inserted in the target element 'video-container'
+								mirror: false       	// Whether to mirror your local video or not
+							});
+
+							this.mainStreamManager = publisher;
+							this.publisher = publisher;
+
+							// --- Publish your stream ---
+
+							this.session.publish(this.publisher);
+						})
+						.catch(error => {
+							console.log('There was an error connecting to the session:', error.code, error.message);
 						});
-
-						this.mainStreamManager = publisher;
-						this.publisher = publisher;
-
-						// --- Publish your stream ---
-
-						this.session.publish(this.publisher);
-					})
-					.catch(error => {
-						console.log('There was an error connecting to the session:', error.code, error.message);
-					});
-			});
-
+				});		
 			window.addEventListener('beforeunload', this.leaveSession)
 		},
-
+		checkSession(sessionId){
+			axios.get(process.env.VUE_APP_API_URL+"/lecture/search?sessionId="+sessionId)
+			.then((response)=>{
+				console.log(response.data);
+				if(response.data==null) return false;
+				return true;
+			})
+			.catch((error)=>{
+				alert(error);
+			}
+			)			
+		},
 		leaveSession () {
 
 			const headers = {
@@ -189,7 +201,7 @@ export default {
 			const headers = {
 				"Authorization": "OPENVIDUAPP:ssafy"
 			}
-						
+
 			return new Promise((resolve, reject) =>{
 				axios.post(process.env.VUE_APP_API_URL+"/lecture", {
 					customSessionId: sessionId,
@@ -210,13 +222,10 @@ export default {
 			});
 		},		
 
-		SearchSession(){
-			const headers = {
-				"Authorization": "OPENVIDUAPP:ssafy"
-			}
-			axios.get(process.env.VUE_APP_API_URL+"/lecture",{headers})
-			.then(()=>{
-				return;
+		SearchAllSession(){
+			axios.get(process.env.VUE_APP_API_URL+"/lecture/search/all")
+			.then((response)=>{
+				console.log(response.data);				
 			})
 			.catch((error)=>{
 				alert(error);
@@ -238,19 +247,21 @@ export default {
 			)
 		},
 
-		joinConnection(){		
-
+		joinConnection(sessionId){		
 			const headers = {
 				"Authorization": "OPENVIDUAPP:ssafy",
 			}
 			return new Promise((resolve, reject) => {
 				axios.post(process.env.VUE_APP_API_URL+"/lecture/connect",{
-					customSessionId: this.mySessionId,
+					customSessionId: sessionId,
 				},{headers})
-				.then((response)=>{
-					this.connectionId = response.data.id;
-					resolve(response.data.token);
-				})
+				.then(response => response.data)
+				.then((data) =>{ 
+					console.log("토큰 받기!!")
+					console.log(data)
+					resolve(data.token)
+				}
+				)				 
 				.catch(error =>
 					reject(error.response));				
 			})

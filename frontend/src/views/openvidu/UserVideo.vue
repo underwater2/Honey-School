@@ -2,6 +2,10 @@
 <div v-if="streamManager">
 	<ov-video :stream-manager="streamManager"/>
 	<div><p>{{ clientData }}</p></div>	
+	<div>
+        <button v-if="muteStatus" @click="changeMuteStatus()">mic-on</button>
+        <button v-else @click="changeMuteStatus()">mic-off</button>
+	</div>
 </div>
 </template>
 
@@ -14,31 +18,34 @@ export default {
 	components: {
 		OvVideo,
 	},
-
+	data() {
+    	return {
+    	  muteStatus: true,
+    	};
+  	},
 	props: {
 		streamManager: Object,
 	},
 
 	computed: {
 		clientData () {
-			const { clientData } = this.getConnectionData();
-			console.log("클라이언트");
-			console.log(clientData);
-			return "권씨";
-			// return "clientData";
-		},
+			const { clientData } = this.getConnectionData();		
+			return clientData;
+		}
 	},
 
 	methods: {
-		getConnectionData () {
-			const { connection } = this.streamManager.stream;			
-			console.log("커넥션");
-			console.log(connection);
-			let a = JSON.parse("{\r\"clientData\":\"참가자요\"\r}");
-			console.log("a : "+a); 
-			return JSON.parse("{\"clientData \":\"참가자요\"}");
-			// return JSON.parse(connection.data);
+		getConnectionData () {						
+			return JSON.parse(this.streamManager.stream.connection.data);
 		},
+		changeMuteStatus() {
+      	//this.publisher.publishAudio(this.muteStatus); // true to unmute the audio track, false to mute it
+		console.log(this.streamManager.stream);
+		console.log("-------");
+		console.log(this.streamManager.stream.streamManager);
+      	this.streamManager.stream.subscribeToAudio(this.muteStatus);
+      	this.muteStatus = !this.muteStatus;
+    	},
 	},
 };
 </script>

@@ -12,6 +12,7 @@ import reactor.core.publisher.Mono;
 
 public interface LectureService {
     Mono<String> createLecture(LectureReq lectureReq, String header);
+    Mono<String> searchLecture(String sessionId, String header);
     Mono<String> searchAllLecture(String header);
     Mono<String> deleteLecture(String sessionId, String header);
     Mono<String> connectLecture(String sessionId, String header) throws ParseException;    

@@ -70,7 +70,6 @@ public class LectureServiceImpl implements LectureService{
     	
     	try {
 			obj = (JSONObject)parser.parse(input);
-			System.out.println(obj.toJSONString());
 			return webClient.post()
 					.uri("/openvidu/api/sessions/")
 					.header(HttpHeaders.AUTHORIZATION,header)					
@@ -84,13 +83,27 @@ public class LectureServiceImpl implements LectureService{
     	
     }
 
-	@Override
-	public Mono<String> searchAllLecture(String header) {
+    @Override
+	public Mono<String> searchLecture(String sessionId, String header) {
 		return webClient.get()
-				.uri("/openvidu/api/sessions/")
-				.header(HttpHeaders.AUTHORIZATION, header)				
-				.retrieve()
-				.bodyToMono(String.class);
+		.uri("/openvidu/api/sessions/"+sessionId)
+		.header(HttpHeaders.AUTHORIZATION, header)
+		.retrieve()
+		.bodyToMono(String.class);		
+	}
+    
+	@Override
+	public Mono<String> searchAllLecture(String header) {		
+		try {
+			return webClient.get()
+					.uri("/openvidu/api/sessions/")
+					.header(HttpHeaders.AUTHORIZATION, header)				
+					.retrieve()
+					.bodyToMono(String.class);
+			
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	@Override
@@ -107,7 +120,6 @@ public class LectureServiceImpl implements LectureService{
 		
 		String input = "{\r\n"
 				+ "    \"type\": \"WEBRTC\",\r\n"
-				+ "    \"data\": \"My Server Data\",\r\n"
 				+ "    \"record\": true,\r\n"
 				+ "    \"role\": \"PUBLISHER\",\r\n"
 				+ "    \"kurentoOptions\": {\r\n"
@@ -116,21 +128,18 @@ public class LectureServiceImpl implements LectureService{
 				+ "        \"videoMaxSendBandwidth\": 1000,\r\n"
 				+ "        \"videoMinSendBandwidth\": 300,\r\n"
 				+ "        \"allowedFilters\": [ \"GStreamerFilter\", \"ZBarFilter\" ]\r\n"
-				+ "    }\r\n"
+				+ "    }\r\n"				
 				+ "}";
 		
 		JSONParser parser = new JSONParser();
     	JSONObject obj = null;
     			    	
     	try {
-    		System.out.println("진입");
     		obj = (JSONObject)parser.parse(input);
-    		System.out.println(obj.toString());
-
     		return webClient.post()				
     				.uri("openvidu/api/sessions/"+sessionId+"/connection")
     				.header(HttpHeaders.AUTHORIZATION, header)
-    				.bodyValue(obj)
+    				.bodyValue(obj)    				
     				.retrieve()
     				.bodyToMono(String.class);
 		} catch (Exception e) {			//
@@ -147,6 +156,5 @@ public class LectureServiceImpl implements LectureService{
 		.retrieve();
 		return HttpStatus.OK;
 	}
-
-
+	
 }

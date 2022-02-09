@@ -4,13 +4,18 @@ import com.ssafy.honeySchool.api.request.LectureReq;
 import com.ssafy.honeySchool.api.response.LectureRes;
 import com.ssafy.honeySchool.common.util.ThrowingConsumer;
 import com.ssafy.honeySchool.db.entity.Lecture;
+
+import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
+
+import java.net.http.HttpResponse;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.stereotype.Service;
@@ -132,4 +137,15 @@ public class LectureServiceImpl implements LectureService{
 			return null;
 		}
 	}
+
+	@Override
+	public HttpStatus disconnectLecture(String sessionId, String connectionId, String header) {
+		webClient.delete()
+		.uri("openvidu/api/sessions/"+sessionId+"/connection/"+connectionId)
+		.header(HttpHeaders.AUTHORIZATION, header)
+		.retrieve();
+		return HttpStatus.OK;
+	}
+
+
 }

@@ -102,7 +102,6 @@ public class LectureServiceImpl implements LectureService{
 		
 		String input = "{\r\n"
 				+ "    \"type\": \"WEBRTC\",\r\n"
-				+ "    \"data\": \"My Server Data\",\r\n"
 				+ "    \"record\": true,\r\n"
 				+ "    \"role\": \"PUBLISHER\",\r\n"
 				+ "    \"kurentoOptions\": {\r\n"

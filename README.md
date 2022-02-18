@@ -23,7 +23,7 @@
 
 ## 서비스 소개
 
-![logo](C:\Users\multicampus\Desktop\SSAFY\디자인\S06P12B201\README_img\logo.png)
+![logo](.\README_img\logo.png)
 
 - 초등학생과 교사를 위한 화상 교육 플랫폼
 - 계속되는 비대면 수업에 지친 **선생님**,

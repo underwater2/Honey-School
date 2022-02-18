@@ -23,7 +23,7 @@
 
 ## 서비스 소개
 
-![logo](.\README_img\logo.png)
+![logo](/uploads/95c49d71797bfd5170b759d66db82c53/logo.png)
 
 - 초등학생과 교사를 위한 화상 교육 플랫폼
 - 계속되는 비대면 수업에 지친 **선생님**,

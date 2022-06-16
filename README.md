@@ -21,6 +21,7 @@
 - 화상 수업 시 집중력을 높일 수 있는 기능 제공
 - 아기자기하고 직관적인 UI/UX
 
+<br>
 
 ## :runner: 팀원 소개
 
@@ -30,12 +31,9 @@
 |     **Leader & Backend**     |              **Backend & CI/CD**              |             **Frontend**             |        **Frontend**        |          **Backend**           |
 |     학급 게시판     |              배포, 화상 수업              |             학급 게시판, 화상 수업             |        회원 관리, 화상 수업        |          회원 관리           |
 
+<br>
 
-
-
-
-
-## :wrench: 개발 환경
+## :computer: 개발 환경
 
 ### :last_quarter_moon: Front-end
 
@@ -57,13 +55,13 @@
 
    - MariaDB
 
-### tv: 기타 기술
+### :tv: 기타 기술
 
    - WebRTC(OpenVidu)
    - AWS
    - Docker
 
-
+<br>
 
 ## 구동 메뉴얼
 

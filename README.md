@@ -83,6 +83,8 @@ cp -r /home/ubuntu/honeyschool/S06P12B201/frontend/dist .
 
 3. 도메인 접속해서 작동 유무 확인
 
+<br>
+
 ## BackEnd 설정
 
 1. 6단계에서 소스 다운 받았다고 가정 및 Openvidu 설치 시 사용한 p12키를 사용하여 SSL 구동합니다.
@@ -160,8 +162,6 @@ docker run --name {원하는 컨테이너 이름} -d -p 9999:9999 {이미지 이
 
 ---
 
-<br>
-
 ### 도커 Volume 생성 및 마운트 하기
 
 1. 불륨 생성하기
@@ -179,8 +179,8 @@ docker volume ls
 
 ```
 
-   **결과**
-   ![불륨확인](https://user-images.githubusercontent.com/71022555/154391203-37f90b1c-22d9-4e44-afb5-eab5765bd5e7.png)  
+- 결과
+   - ![불륨확인](https://user-images.githubusercontent.com/71022555/154391203-37f90b1c-22d9-4e44-afb5-eab5765bd5e7.png)  
 
 3. 불륨 정보 확인
 

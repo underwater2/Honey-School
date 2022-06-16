@@ -8,7 +8,7 @@
 
 <img alt="logo" src="README.assets/logo.png" width="500" height="500"/>
 
-기존 비대면 수업 서비스에 적응하기 힘들었던 초등학생들을 위해 준비했습니다.
+초등학생의 눈높이에 맞지 않는 기존의 비대면 수업 서비스, 사용하기 힘들고 번거로우셨죠?
 
 꿀잼스쿨을 사용하여 직접 손으로 숙제하고, 음성을 녹음해서 선생님께 질문해보세요.
 
@@ -48,8 +48,18 @@
 ### :tv: 기타 기술
 
    - WebRTC(OpenVidu)
-   - AWS
+   - AWS EC2
    - Docker
+   - Nginx
+
+### :family: 협업 툴
+
+   - GitLab
+   - Webex
+   - Mattermost
+   - Jira
+   - Notion
+   - Discord
 
 <br>
 
@@ -57,6 +67,9 @@
 ![architecture](README.assets/architecture.PNG)
 
 <br>
+
+## 사용 모습
+
 
 ## :page_facing_up: 구동 메뉴얼
 
@@ -228,7 +241,7 @@ ls
 
 |            박윤지             |                권영현                 |               박소미                |              이상백               |             정희연              |
 | :---------------------------: | :-----------------------------------: | :---------------------------------: | :-------------------------------: | :-----------------------------: |
-| ![yunji](README.assets/profile/yunji.png) | ![1234567](README.assets/profile/yunji.png) | ![123456](README.assets/profile/yunji.png) | ![12345](README.assets/profile/yunji.png) | ![1234](README.assets/profile/yunji.png) |
+| ![yunji](README.assets/profile/yunji.png) | ![younghyun](README.assets/profile/younghyun.png) | ![somi](README.assets/profile/somi.png) | ![sangbaek](README.assets/profile/sangbaek.png) | ![huiyeon](README.assets/profile/huiyeon.png) |
 |     **Leader & Backend**     |              **Backend & CI/CD**              |             **Frontend**             |        **Frontend**        |          **Backend**           |
 |     학급 게시판     |              배포, 화상 수업              |             학급 게시판, 화상 수업             |        회원 관리, 화상 수업        |          회원 관리           |
 

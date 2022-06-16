@@ -1,29 +1,22 @@
 # Honey School (꿀잼스쿨)
 
-- 2학기 공통 프로젝트 - 웹기술 도메인
-- 대전 2반 1팀
-- 팀명: 6주전사
+## Web RTC를 이용한 화상강의 서비스
 
+<img alt="logo" src="README.assets/logo.png" width="500" height="500"/>
 
+<br>
 
-## 팀원 소개
+## :running: 팀원 소개
 
-#### BackEnd
-
-- 박윤지 (팀장) : 학급 게시판
-- 권영현 : 배포, openvidu
-- 정희연: 회원 관리
-
-#### FrontEnd
-
-- 박소미: 학급 게시판 페이지, 화상 수업 페이지
-- 이상백: 회원 페이지, 화상 수업 페이지
-
+|            박윤지             |                권영현                 |               박소미                |              이상백               |             정희연              |
+| :---------------------------: | :-----------------------------------: | :---------------------------------: | :-------------------------------: | :-----------------------------: |
+| ![yunji](README.assets/profile/yunji.png) | ![1234567](README.assets/profile/yunji.png) | ![123456](README.assets/profile/yunji.png) | ![12345](README.assets/profile/yunji.png) | ![1234](README.assets/profile/yunji.png) |
+|     **Leader & Backend**     |              **Backend & CI/CD**              |             **Frontend**             |        **Frontend**        |          **Backend**           |
+|     학급 게시판     |              배포, 화상 수업              |             학급 게시판, 화상 수업             |        회원 관리, 화상 수업        |          회원 관리           |
 
 
 ## 서비스 소개
 
-![logo](README.assets/logo.png)
 
 - 초등학생과 교사를 위한 화상 교육 플랫폼
 - 계속되는 비대면 수업에 지친 **선생님**,

@@ -23,7 +23,7 @@
 
 <br>
 
-## 주요 기능
+## :star2: 주요 기능
 
 - 메인 페이지
    - 오늘의 시간표와 요일 표시
@@ -78,6 +78,9 @@
 <!-- | 내용 21 | 내용 22 | 내용 23 |
 | 내용 21 | 내용 22 | 내용 23 | -->
 
+<br>
+
+## :sparkles: 사용 모습
 
 <br>
 
@@ -126,11 +129,7 @@
 
 <br>
 
-## 사용 모습
-
-<br>
-
-## Git branch 구조
+## :raised_hands: Git branch 구조
 
 - master
 - develop (default branch)
@@ -146,8 +145,8 @@
 
 <br>
 
-## Git 컨벤션
-태그: 메세지 #Jira이슈번호
+## :raised_hands: Git 컨벤션
+> 태그: 메세지 #Jira이슈번호<br>
 ex) Feat: “추가 get data api 함수 #S06P11B201-9
 #### 태그
 | 태그 이름 | 설명 |
@@ -156,7 +155,6 @@ ex) Feat: “추가 get data api 함수 #S06P11B201-9
 | Fix | 버그를 고친 경우 |
 | Edit | 코드를 수정한 경우 |
 | Design | CSS 등 사용자 UI 디자인 변경 |
-
 | !BREAKING CHANGE | 커다란 API 변경의 경우 |
 | !HOTFIX | 급하게 치명적인 버그를 고쳐야 하는 경우 |
 | Style | 코드 포맷 변경, 세미 콜론 누락, 코드 수정이 없는 경우 |

@@ -180,7 +180,7 @@ docker volume ls
 ```
 
 - 결과
-   - ![불륨확인](https://user-images.githubusercontent.com/71022555/154391203-37f90b1c-22d9-4e44-afb5-eab5765bd5e7.png)  
+   ![불륨확인](https://user-images.githubusercontent.com/71022555/154391203-37f90b1c-22d9-4e44-afb5-eab5765bd5e7.png)  
 
 3. 불륨 정보 확인
 

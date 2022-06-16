@@ -63,8 +63,8 @@
 
 <br>
 
-## :earch_asia: 아키텍처
-![architecture](README.assets/architecture.png)
+## :earth_asia: 아키텍처
+![architecture](README.assets/architecture.PNG)
 
 <br>
 

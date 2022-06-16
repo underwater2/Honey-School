@@ -23,16 +23,6 @@
 
 <br>
 
-## :runner: 팀원 소개
-
-|            박윤지             |                권영현                 |               박소미                |              이상백               |             정희연              |
-| :---------------------------: | :-----------------------------------: | :---------------------------------: | :-------------------------------: | :-----------------------------: |
-| ![yunji](README.assets/profile/yunji.png) | ![1234567](README.assets/profile/yunji.png) | ![123456](README.assets/profile/yunji.png) | ![12345](README.assets/profile/yunji.png) | ![1234](README.assets/profile/yunji.png) |
-|     **Leader & Backend**     |              **Backend & CI/CD**              |             **Frontend**             |        **Frontend**        |          **Backend**           |
-|     학급 게시판     |              배포, 화상 수업              |             학급 게시판, 화상 수업             |        회원 관리, 화상 수업        |          회원 관리           |
-
-<br>
-
 ## :computer: 개발 환경
 
 ### :last_quarter_moon: Front-end
@@ -68,7 +58,7 @@
 
 <br>
 
-## 구동 메뉴얼
+## :page_facing_up: 구동 메뉴얼
 
 ## FrontEnd 설정
 
@@ -150,14 +140,14 @@ EXPOSE 9999
 ## EXPOSE 애플리케이션이 사용하는 포트 
 ```
 
-3. Docker Image 만들기
+4. Docker Image 만들기
 
 ```bash
 docker build -t yunghun97/test .
 
 ```
 
-4. Docker 컨테이너 기본 실행 시 (컨테이너 삭제 시 데이터 날라감)
+5. Docker 컨테이너 기본 실행 시 (컨테이너 삭제 시 데이터 날라감)
 
 ```bash
 docker run --name {원하는 컨테이너 이름} -d -p 9999:9999 {이미지 이름}
@@ -166,10 +156,15 @@ docker run --name {원하는 컨테이너 이름} -d -p 9999:9999 {이미지 이
 ## -p IN:OUT IN으로 들어오는 포트를 OUT 포트로 매핑해준다.
 ```
 
+<br>
+
 ---
 
-4. 도커 Volume 생성 및 마운트 하기
-5. 불륨 생성하기
+<br>
+
+### 도커 Volume 생성 및 마운트 하기
+
+1. 불륨 생성하기
 
 ```bash
 docker volume create {volume 명}
@@ -184,8 +179,8 @@ docker volume ls
 
 ```
 
-결과  
-![불륨확인](https://user-images.githubusercontent.com/71022555/154391203-37f90b1c-22d9-4e44-afb5-eab5765bd5e7.png)  
+   **결과**
+   ![불륨확인](https://user-images.githubusercontent.com/71022555/154391203-37f90b1c-22d9-4e44-afb5-eab5765bd5e7.png)  
 
 3. 불륨 정보 확인
 
@@ -193,8 +188,8 @@ docker volume ls
 docker volume inspect {files}
 ```
 
-결과  
-![불륨정보확인](https://user-images.githubusercontent.com/71022555/154391362-2e440cde-a2d7-4c15-a3e6-a64c333a7515.png)  
+   **결과**  
+   ![불륨정보확인](https://user-images.githubusercontent.com/71022555/154391362-2e440cde-a2d7-4c15-a3e6-a64c333a7515.png)  
 
 4. 불륨 마운트
 
@@ -212,8 +207,8 @@ docker inspect {컨테이너 이름}
 #docker inspect honeyschool_be
 ```
 
-결과  
-![마운트결과확인](https://user-images.githubusercontent.com/71022555/154392384-9da1c54b-f57e-43cd-a666-ed82082c2a36.png)  
+   **결과**  
+   ![마운트결과확인](https://user-images.githubusercontent.com/71022555/154392384-9da1c54b-f57e-43cd-a666-ed82082c2a36.png)  
 
 6. 불륨 동기화 되었는지 확인하기
 
@@ -229,9 +224,19 @@ cd /var/lib/docker/volumes/files/_data
 ls
 ```
 
+<br>
 
+## :runner: 팀원 소개
 
-### 출처
+|            박윤지             |                권영현                 |               박소미                |              이상백               |             정희연              |
+| :---------------------------: | :-----------------------------------: | :---------------------------------: | :-------------------------------: | :-----------------------------: |
+| ![yunji](README.assets/profile/yunji.png) | ![1234567](README.assets/profile/yunji.png) | ![123456](README.assets/profile/yunji.png) | ![12345](README.assets/profile/yunji.png) | ![1234](README.assets/profile/yunji.png) |
+|     **Leader & Backend**     |              **Backend & CI/CD**              |             **Frontend**             |        **Frontend**        |          **Backend**           |
+|     학급 게시판     |              배포, 화상 수업              |             학급 게시판, 화상 수업             |        회원 관리, 화상 수업        |          회원 관리           |
+
+<br>
+
+## 출처
 
 - UI/UX 디자인 일러스트 출처
   - https://www.streamlinehq.com

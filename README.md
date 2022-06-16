@@ -188,7 +188,7 @@ docker volume ls
 docker volume inspect {files}
 ```
 
-- 결과<br>  
+- 결과
    ![불륨정보확인](https://user-images.githubusercontent.com/71022555/154391362-2e440cde-a2d7-4c15-a3e6-a64c333a7515.png)  
 
 4. 불륨 마운트
@@ -207,7 +207,7 @@ docker inspect {컨테이너 이름}
 #docker inspect honeyschool_be
 ```
 
-   **결과**  
+- 결과
    ![마운트결과확인](https://user-images.githubusercontent.com/71022555/154392384-9da1c54b-f57e-43cd-a666-ed82082c2a36.png)  
 
 6. 불륨 동기화 되었는지 확인하기

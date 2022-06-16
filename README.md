@@ -63,6 +63,11 @@
 
 <br>
 
+## :earch_asia: 아키텍처
+![architecture](README.assets/architecture.png)
+
+<br>
+
 ## 구동 메뉴얼
 
 ## FrontEnd 설정

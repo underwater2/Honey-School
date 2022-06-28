@@ -11,7 +11,7 @@
 
 <br>
 
-## :fireworks: 서비스 소개
+## :hatching_chick: 서비스 소개
 초등학생의 눈높이에 맞지 않는 기존의 비대면 수업 서비스, 사용하기 힘들고 번거로우셨죠?
 
 꿀잼스쿨을 사용하여 직접 손으로 숙제하고, 음성을 녹음해서 선생님께 질문해보세요.
@@ -42,23 +42,7 @@
 
 ## :sparkles: 사용 모습
 
-## 회원 관리
-|                       로그인                       |                       내 정보 수정                       |
-| :------------------------------------------------: | :------------------------------------------------------: |
-|     ![login](README.assets/service/login.gif)      |    ![signup](README.assets/service/edit_profile.gif)    |
-
-## 화상 수업
-|                    강의 생성 및 학생 입장                    |
-| :----------------------------------------------------------: |
-| ![create_session](README.assets/service/create_session.gif)  |
-
-|                          손 들기                          |                       자리 비움 알림                      |
-| :-------------------------------------------------------: | :-------------------------------------------------------: |
-|    ![raise_hand](README.assets/service/raise_hand.gif)    |      ![step_out](README.assets/service/step_out.gif)      |
-
-|                         퀴즈 내기                         |                         화면 공유                         |
-| :-------------------------------------------------------: | :-------------------------------------------------------: |
-|       ![raise_hand](README.assets/service/quiz.gif)       |    ![step_out](README.assets/service/share_screen.gif)    |
+[전체 서비스 화면 보기](README.assets/service/service.md)
 
 <br>
 
